@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Songless - Đoán Bài Hát</title>
+  <title>Songless VN - Đoán Bài Hát</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background: #121213; color: #fff; display: flex; justify-content: center; padding: 20px; margin: 0; }
@@ -113,7 +113,7 @@
   const songDatabase = [
     {
       title: "Nắng Ấm Xa Dần",
-      artist: "Sơn Tùng M-TP",
+      artist: "Sơn Tùng MTP",
       src: "https://files.catbox.moe/rm4q8a.mp3",
       hint: "Theo thời gian những hạt mưa như nặng thêm"
     },
@@ -133,19 +133,19 @@
       title: "Bên Trên Tầng Lầu",
       artist: "Tăng Duy Tân",
       src: "https://files.catbox.moe/tjhlsc.mp3",
-      hint: "Em ơi đừng khóc bóng tối trước mắt sẽ bắt em đi"
+      hint: "không còn tương lai"
     },
     {
       title: "Nắng Ấm Trong Tim",
       artist: "Duongg, Dadeon",
       src: "https://files.catbox.moe/69a1j1.mp3",
-      hint: "Dù một ngàn năm đi nữa anh xin trao hết tất cả những nhớ thương"
+      hint: "Du dương câu ca gọi tên nàng cho trái tim rộn vang"
     },
     {
       title: "Kiếp đỏ đen",
       artist: "Duy Mạnh",
       src: "https://files.catbox.moe/830onc.mp3",
-      hint: "Giờ ta chẳng còn chi"
+      hint: "cho thì dễ quá:)"
     },
     {
       title: "Mama boy",
@@ -157,14 +157,122 @@
       title: "Simp gái 808",
       artist: "LowG",
       src: "https://files.catbox.moe/4xp7rp.mp3",
-      hint: "Anh tìm được ai nhìn như 1 cô thiên thần ngoài em"
+      hint: "Viết cho em nghìn lá thư"
     },
     {
       title: "Chán gái 707",
       artist: "LowG",
       src: "https://files.catbox.moe/ebrgb6.mp3",
-      hint: "Tìm em, tìm em trong bóng"
-    }
+      hint: "Tìm em"
+    },
+{
+      title: "Nét",
+      artist: "LowG",
+      src: "https://files.catbox.moe/xqxgc9.mp3",
+      hint: "bố m đứng đầu vì nhạc hay và cười duyên"
+    },
+    {
+      title: "Ai ngoài anh",
+      artist: "VSTRA",
+      src: "https://files.catbox.moe/jq1uas.mp3",
+      hint: "oh baby baby"
+    },
+    {
+      title: " Không yêu em thì yêu ai",
+      artist: "Vũ, LowG",
+      src: "https://files.catbox.moe/wl66v4.mp3",
+      hint: "Liệu còn có em?"
+    },
+    {
+      title: "An thần",
+      artist: "Thắng, LowG",
+      src: "https://files.catbox.moe/ziprwj.mp3",
+      hint: "Thuốc tây cùng lá cây"
+    },
+    {
+      title: "Em là nhất",
+      artist: "kis x Hoàng KayLee x Yahy 「Cukak Remix」",
+      src: "https://files.catbox.moe/1lpl99.mp3",
+      hint: "Anh trong chiếc quần âu đen"
+    },
+    {
+      title: "Người em cố đô",
+      artist: "Rum x Đaa x Toan「1 9 6 7 Remix」",
+      src: "https://files.catbox.moe/j6xfno.mp3",
+      hint: "Em bước đi như vì sao sáng yêu kiều"
+    },
+    {
+      title: "Xuân này con không về",
+      artist: "Hương Lan ",
+      src: "https://files.catbox.moe/qmrvwc.mp3",
+      hint: "năm trước con hẹn đầu xuân sẽ về"
+    },
+    {
+      title: "Diễm xưa",
+      artist: "Trịnh Công Sơn",
+      src: "https://files.catbox.moe/by221y.mp3",
+      hint: "Mưa vẫn mưa bayy"
+    },
+    {
+      title: "Hồn lỡ sa vào",
+      artist: "Binz",
+      src: "https://files.catbox.moe/60aka8.mp3",
+      hint: "Hồn lỡ sa vào đôi mắt "
+    },
+    {
+      title: "Chìm sâu",
+      artist: "RPT MCK",
+      src: "https://files.catbox.moe/1feh6y.mp3",
+      hint: "Đừng cho anh 1 lí do, hãy nói em cần gì"
+    },
+    {
+      title: "Chăm hoa",
+      artist: "MONO",
+      src: "https://files.catbox.moe/0gwvsr.mp3",
+      hint: "Em là em là ai, khiến lòng anh si mê bnh ngày qua"
+    },
+    {
+      title: "Soju love",
+      artist: "Obito",
+      src: "https://files.catbox.moe/7aap3a.mp3",
+      hint: "uống soju"
+    },
+    {
+      title: "Chìm sâu",
+      artist: "RPT MCK",
+      src: "https://files.catbox.moe/1feh6y.mp3",
+      hint: "You got me, got me...."
+    },
+    {
+      title: "Nắng có mang em về",
+      artist: "Shartnuss, Phankeo, TrD",
+      src: "https://files.catbox.moe/00gtem.mp3",
+      hint: "...."
+    },
+    {
+      title: "Ai đưa em về",
+      artist: "TIA, Lê Thiện Hiếu",
+      src: "https://files.catbox.moe/x6f16n.mp3",
+      hint: "low cortisol"
+    },
+    {
+      title: "Tàu anh qua núi",
+      artist: "Phan Lạc Hoa",
+      src: "https://files.catbox.moe/m4rv2y.mp3",
+      hint: "Là yêuuu nhauuu"
+    },
+    {
+      title: "Em của ngày hôm qua",
+      artist: "Sơn Tùng MTP",
+      src: "https://files.catbox.moe/m4rv2y.mp3",
+      hint: "quê Thái Bình"
+    },
+    {
+      title: "Trú mưa",
+      artist: "HKT",
+      src: "https://files.catbox.moe/430ogj.mp3",
+      hint: "không biết nữa thì chịu đấy:)"
+    },
   ];
 
   // Lời khen theo từng mốc đoán đúng
@@ -430,8 +538,8 @@
       document.getElementById("resultTitle").textContent = praiseMessages[currentAttempt] || "Chúc mừng! Bạn đã đoán đúng 🎉";
     } else {
       document.getElementById("resultTitle").textContent = wrongCount >= MAX_WRONG 
-        ? "Bạn đã đoán sai 2 lần! Kết thúc lượt chơi 🐔" 
-        : "Đã hết 6 lượt nghe! Quá gàaaa! hahaha 🐔";
+        ? " Chưa tày đâu 🐔" 
+        : " Quá gàaaa! hahaha 🐔";
     }
 
     document.getElementById("resultSong").textContent = `Đáp án: ${currentSong.title} - ${currentSong.artist}`;
