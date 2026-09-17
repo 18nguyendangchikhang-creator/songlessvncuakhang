@@ -298,6 +298,7 @@
   let isGameOver = false;
   let timer = null;
   let unplayedSongs = [];
+  let snippetStartTime = 0; // Mốc bắt đầu ngẫu nhiên cho bài hiện tại
 
   const audio = document.getElementById("audioElement");
   const playBtn = document.getElementById("playBtn");
@@ -306,10 +307,49 @@
   const hintBox = document.getElementById("hintBox");
   const suggestionsBox = document.getElementById("suggestionsBox");
 
+  // Tính toán mốc bắt đầu ngẫu nhiên ở khoảng giữa bài hát an toàn
+  function setupSnippetStartTime() {
+    const duration = audio.duration;
+    if (!duration || isNaN(duration) || duration <= totalMaxTime + 5) {
+      snippetStartTime = 0;
+      return;
+    }
+
+    // Khoảng an toàn: từ giây thứ 10 đến (duration - totalMaxTime - 5)
+    const minStart = Math.min(10, Math.max(0, Math.floor(duration - totalMaxTime - 5)));
+    const maxStart = Math.max(minStart, Math.floor(duration - totalMaxTime - 5));
+
+    if (maxStart > minStart) {
+      snippetStartTime = Math.floor(minStart + Math.random() * (maxStart - minStart + 1));
+    } else {
+      snippetStartTime = minStart;
+    }
+  }
+
+  // Khi tải xong metadata bài hát thì tính mốc ngẫu nhiên cố định cho bài đó
+  audio.onloadedmetadata = () => {
+    setupSnippetStartTime();
+  };
+
+  // Bắt lỗi nếu file mp3 bị hỏng hoặc link chết
+  audio.onerror = () => {
+    console.error("Lỗi tải audio:", currentSong ? currentSong.src : "");
+    hintBox.textContent = `⚠️ Không thể phát bài hát này (link audio bị lỗi hoặc không tải được). Bạn có thể bấm "Bỏ qua" hoặc "Chơi tiếp bài khác".`;
+    hintBox.style.color = "#fca5a5";
+    hintBox.style.borderColor = "#ef4444";
+    pauseAudio();
+  };
+
+  audio.onended = () => {
+    pauseAudio();
+    progressBar.style.width = "0%";
+  };
+
   function initGame() {
     currentAttempt = 0;
     wrongCount = 0;
     isGameOver = false;
+    snippetStartTime = 0;
 
     if (unplayedSongs.length === 0) {
       unplayedSongs = [...songDatabase];
@@ -317,6 +357,10 @@
     const randomIndex = Math.floor(Math.random() * unplayedSongs.length);
     currentSong = unplayedSongs[randomIndex];
     unplayedSongs.splice(randomIndex, 1);
+
+    // Khôi phục giao diện ô gợi ý nếu bài trước báo lỗi link
+    hintBox.style.color = "";
+    hintBox.style.borderColor = "";
 
     audio.src = currentSong.src;
     audio.currentTime = 0;
@@ -362,20 +406,25 @@
   }
 
   function playSnippet() {
-    audio.currentTime = 0;
+    if (snippetStartTime === 0 && audio.duration) {
+      setupSnippetStartTime();
+    }
+    audio.currentTime = snippetStartTime;
     audio.play().then(() => {
       isPlaying = true;
       playBtn.textContent = "❚❚";
-      const allowedTime = unlockTimes[currentAttempt];
+      const allowedDuration = unlockTimes[currentAttempt];
+      const targetEndTime = snippetStartTime + allowedDuration;
 
       clearInterval(timer);
       timer = setInterval(() => {
-        const percent = (audio.currentTime / totalMaxTime) * 100;
+        const elapsed = Math.max(0, audio.currentTime - snippetStartTime);
+        const percent = (elapsed / totalMaxTime) * 100;
         progressBar.style.width = `${Math.min(percent, 100)}%`;
 
-        if (audio.currentTime >= allowedTime) {
+        if (audio.currentTime >= targetEndTime || audio.currentTime < snippetStartTime) {
           pauseAudio();
-          audio.currentTime = 0;
+          audio.currentTime = snippetStartTime;
           progressBar.style.width = "0%";
         }
       }, 50);
