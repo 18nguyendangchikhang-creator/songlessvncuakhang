@@ -22,9 +22,9 @@
     .progress-bar { height: 100%; width: 0%; background: #10b981; transition: width 0.1s linear; }
 
     /* Nút Play */
-    .controls { display: flex; align-items: center; gap: 15px; margin: 5px 0; }
-    .btn-play { background: #10b981; border: none; width: 54px; height: 54px; border-radius: 50%; font-size: 22px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+    .btn-play { background: #10b981; border: none; width: 54px; height: 54px; border-radius: 50%; font-size: 22px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: opacity 0.15s ease, transform 0.1s ease; }
     .btn-play:hover { opacity: 0.9; }
+    .btn-play.loading { opacity: 0.6; cursor: wait; }
 
     /* Ô gợi ý Hint Box nằm dưới nút bấm và trên ô tìm kiếm */
     .hint-box { width: 100%; background: #1e293b; border: 1px dashed #38bdf8; border-radius: 6px; padding: 10px 14px; font-size: 14px; color: #bae6fd; text-align: center; }
@@ -115,25 +115,28 @@
       title: "Nắng Ấm Xa Dần",
       artist: "Sơn Tùng MTP",
       src: "https://files.catbox.moe/rm4q8a.mp3",
-      hint: "Theo thời gian những hạt mưa như nặng thêm"
+      hint: "Theo thời gian những hạt mưa như nặng thêm, xóa hết ưu phiền mặn nồng ngọt nào giữa chúng ta",
+      lyrics: "Theo thời gian những hạt mưa như nặng thêm xóa hết ưu phiền mặn nồng ngọt ngào xưa kia nay trôi về đâu"
     },
     {
       title: "Tình Ca Tình Ta",
       artist: "KIS",
       src: "https://files.catbox.moe/ix86ub.mp3",
-      hint: "Lạc vào chốn yên bình nắng vương vai"
+      hint: "Lạc vào chốn yên bình nắng vương vai, lạc vào những giấc mơ khờ dại",
+      lyrics: "Lạc vào chốn yên bình nắng vương vai lạc vào những giấc mơ khờ dại tình ca ta hát vang muôn ngàn trùng khơi"
     },
     {
       title: "Waiting For You",
       artist: "MONO",
       src: "https://files.catbox.moe/yvqsq3.mp3",
-      hint: "Biết em đã có người ở gần bên"
+      hint: "Biết em đã có người ở gần bên",
+      lyrics: "Biết em đã có người ở gần bên nhưng anh vẫn đứng đây chờ đợi một cơ hội dù là mong manh"
     },
     {
       title: "Bên Trên Tầng Lầu",
       artist: "Tăng Duy Tân",
       src: "https://files.catbox.moe/tjhlsc.mp3",
-      hint: "không còn tương lai"
+      hint: "không còn tương lai, em cũng chẳng còn tương lai"
     },
     {
       title: "Nắng Ấm Trong Tim",
@@ -145,7 +148,7 @@
       title: "Kiếp đỏ đen",
       artist: "Duy Mạnh",
       src: "https://files.catbox.moe/830onc.mp3",
-      hint: "cho thì dễ quá:)"
+      hint: "Tiền có kiếm như nước rồi cũng sẽ trôi hết. Tay không trắng tay lại về không"
     },
     {
       title: "Mama boy",
@@ -193,31 +196,31 @@
       title: "Em là nhất",
       artist: "kis x Hoàng KayLee x Yahy 「Cukak Remix」",
       src: "https://files.catbox.moe/1lpl99.mp3",
-      hint: "Anh trong chiếc quần âu đen"
+      hint: "Anh trong chiếc quần âu đen, em váy cưới làm dâu đến bên"
     },
     {
       title: "Người em cố đô",
       artist: "Rum x Đaa x Toan「1 9 6 7 Remix」",
       src: "https://files.catbox.moe/j6xfno.mp3",
-      hint: "Em bước đi như vì sao sáng yêu kiều"
+      hint: "Em dịu dàng bước đến bên tôi trao vị ngọt đôi môi. Có chút thương âm thầm xa xôi"
     },
     {
       title: "Xuân này con không về",
       artist: "Hương Lan ",
       src: "https://files.catbox.moe/qmrvwc.mp3",
-      hint: "năm trước con hẹn đầu xuân sẽ về"
+      hint: "năm trước con hẹn đầu xuân sẽ về, nay én bay đầy trc ngõ"
     },
     {
       title: "Diễm xưa",
       artist: "Trịnh Công Sơn",
       src: "https://files.catbox.moe/by221y.mp3",
-      hint: "Mưa vẫn mưa bayy"
+      hint: "Mưa vẫn mưa bayy, trên tầng tháp cổ"
     },
     {
       title: "Hồn lỡ sa vào",
       artist: "Binz",
       src: "https://files.catbox.moe/60aka8.mp3",
-      hint: "Hồn lỡ sa vào đôi mắt "
+      hint: "Hồn lỡ sa vào đôi mắt em, chiều nao xõa tóc ngồi bên thềm "
     },
     {
       title: "Chìm sâu",
@@ -235,19 +238,19 @@
       title: "Soju love",
       artist: "Obito",
       src: "https://files.catbox.moe/7aap3a.mp3",
-      hint: "uống soju"
+      hint: "Vào cửa hàng lựa soju, hai mình overnight. Mình chuyện trò dù sáng đêm, không quan tâm phải đau vì ai"
     },
     {
       title: "Nắng có mang em về",
       artist: "Shartnuss, Phankeo, TrD",
       src: "https://files.catbox.moe/00gtem.mp3",
-      hint: "...."
+      hint: "Rồi chỉ khi cơn mưa tới không thấy em nữa anh chợt hững hờ. Tự trách anh quá khờ nhìn em cạnh bên ai khác"
     },
     {
       title: "Ai đưa em về",
       artist: "TIA, Lê Thiện Hiếu",
       src: "https://files.catbox.moe/x6f16n.mp3",
-      hint: "low cortisol"
+      hint: "Take me back back home, đường về cũng chẳng có xa"
     },
     {
       title: "Tàu anh qua núi",
@@ -259,13 +262,13 @@
       title: "Em của ngày hôm qua",
       artist: "Sơn Tùng MTP",
       src: "https://files.catbox.moe/d0cg5u.mp3",
-      hint: "quê Thái Bình"
+      hint: "Liệu rằng chia tay trong em có quên được câu ca? Tình yêu khi xưa em trao cho anh đâu nào phôi pha"
     },
     {
-      title: "Trú mưa",
-      artist: "HKT",
-      src: "https://files.catbox.moe/430ogj.mp3",
-      hint: "không biết nữa thì chịu đấy:)"
+      title: "Có công mài sắc ",
+      artist: "Ngô lan Hương",
+      src: "https://files.catbox.moe/f8fle0.mp3",
+      hint: "Bởi người xưa mới hay có câu. Có công mài sắc có ngày... nên duyên..."
     },
     {
       title: "Nếu như ta chẳng còn",
@@ -273,6 +276,80 @@
       src: "https://files.catbox.moe/illl8r.mp3",
       hint: "Nếu mai sau này nhớ đến nhau, quay về giây phút đầu"
     },
+    {
+      title: "Vũ trụ có anh",
+      artist: "Phương Mỹ Chi, DTAP, Pháo",
+      src: "https://files.catbox.moe/geqa43.mp3",
+      hint: "Này người ơi biết không ở. Ở mọi vũ trụ có anh có anh em buồn"
+    },
+    {
+      title: "Say yes",
+      artist: "Pia Linh, OgeNus",
+      src: "https://files.catbox.moe/es7ekl.mp3",
+      hint: "Mình cùng chạy trốn âm thanh xô bồ. Thiên nhiên đang mong đợi. Về với những lớp sóng xô"
+    },
+    {
+      title: "Mười năm",
+      artist: "Đen",
+      src: "https://files.catbox.moe/tbruzf.mp3",
+      hint: "Có cánh hoa nào không tàn, có giấc mơ nào không tan?"
+    },
+    {
+      title: "Cho tôi đi theo",
+      artist: "Ngọt",
+      src: "https://files.catbox.moe/o2jgym.mp3",
+      hint: "Cho tôi đi theo với, nơi anh đi về"
+    },
+    {
+      title: "Chúng ta ở hiện tại",
+      artist: "Sơn Tùng MTP",
+      src: "https://files.catbox.moe/f9jkvz.mp3",
+      hint: "Điều anh luôn giữ kín trong tim. Thương em đôi mắt ướt nhòa"
+    },
+    {
+      title: "Thằng điên",
+      artist: "Justatee",
+      src: "https://files.catbox.moe/9x5mz8.mp3",
+      hint: "Chơi vơi nơi mà loài người nhìn anh phiêu (như thằng điên)"
+    },
+    {
+      title: "vaicaunoicokhiennguoithaydoi",
+      artist: "GREY D",
+      src: "https://files.catbox.moe/cfpenz.mp3",
+      hint: "Thức thâu đêm để nghĩ suy về em nhiều. Thật ra có những điều làm cho anh không yên được giấc"
+    },
+    {
+      title: "FRIENDSHIP",
+      artist: "Đen",
+      src: "https://files.catbox.moe/v0hd77.mp3",
+      hint: "Tôi không muốn trên đường xa một mình. Khi tôi mệt không ai vỗ vai tôi"
+    },
+    {
+      title: "Tiny love",
+      artist: "Thịnh suy",
+      src: "https://files.catbox.moe/peqswt.mp3",
+      hint: "Làm lại từ những thứ đơn giản nhất chuyện trò như lúc mới yêu. Tình mình như thứ nước hoa phảng phất nồng nàn như bát bún riêu"
+    },
+     {
+      title: "Thường",
+      artist: "Thịnh suy",
+      src: "https://files.catbox.moe/0lnxdw.mp3",
+      hint: "Chuyện thường ngày giống như hai bức tranh quen. Ở nơi đó đây"
+    },
+     {
+      title: "Chết trong em",
+      artist: "Thịnh suy",
+      src: "https://files.catbox.moe/asynli.mp3",
+      hint: "Chết trong tôi một phần tim thao thức. Chết trên môi một mùi hương chưa dứt"
+    },
+     {
+      title: "Thắc mắc",
+      artist: "Thịnh suy",
+      src: "https://files.catbox.moe/spnzxp.mp3",
+      hint: "Có lẽ em chẳng khóc chút nào. Có lẽ em chẳng quan tâm anh ra sao"
+    },
+   
+    
   ];
 
   // Lời khen theo từng mốc đoán đúng
@@ -295,10 +372,13 @@
   let currentAttempt = 0;
   let wrongCount = 0;
   let isPlaying = false;
+  let isAudioLoading = false; // Cờ theo dõi trạng thái đang buffer/tải âm thanh
   let isGameOver = false;
   let timer = null;
   let unplayedSongs = [];
   let snippetStartTime = 0; // Mốc bắt đầu ngẫu nhiên cho bài hiện tại
+  let isSnippetPrepared = false; // Đánh dấu đã tua sẵn về snippetStartTime
+  let currentHintSnippet = ""; // Cụm từ gợi ý ngẫu nhiên cố định cho ván hiện tại
 
   const audio = document.getElementById("audioElement");
   const playBtn = document.getElementById("playBtn");
@@ -306,6 +386,37 @@
   const unlockInfo = document.getElementById("unlock-info");
   const hintBox = document.getElementById("hintBox");
   const suggestionsBox = document.getElementById("suggestionsBox");
+
+  // Cập nhật trạng thái nút Play linh hoạt (chơi, tạm dừng, loading)
+  function setPlayBtnState(state) {
+    if (state === "loading") {
+      playBtn.textContent = "⏳";
+      playBtn.classList.add("loading");
+    } else if (state === "playing") {
+      playBtn.textContent = "❚❚";
+      playBtn.classList.remove("loading");
+    } else {
+      playBtn.textContent = "▶";
+      playBtn.classList.remove("loading");
+    }
+  }
+
+  // Hàm tiện ích trích xuất ngẫu nhiên một cụm từ liên tiếp (mặc định 3 từ)
+  function getRandomSnippet(text, wordCount = 3) {
+    if (!text || typeof text !== "string") return "Đang cập nhật...";
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    if (words.length === 0) return "Đang cập nhật...";
+
+    // Nếu số lượng từ ít hơn hoặc bằng wordCount thì hiển thị toàn bộ
+    if (words.length <= wordCount) {
+      return `...${words.join(" ")}...`;
+    }
+
+    const maxStartIndex = words.length - wordCount;
+    const startIndex = Math.floor(Math.random() * (maxStartIndex + 1));
+    const snippet = words.slice(startIndex, startIndex + wordCount).join(" ");
+    return `...${snippet}...`;
+  }
 
   // Tính toán mốc bắt đầu ngẫu nhiên ở khoảng giữa bài hát an toàn
   function setupSnippetStartTime() {
@@ -326,9 +437,25 @@
     }
   }
 
-  // Khi tải xong metadata bài hát thì tính mốc ngẫu nhiên cố định cho bài đó
-  audio.onloadedmetadata = () => {
+  // Chuẩn bị và gán trước currentTime ngay khi có metadata hoặc canplay
+  function prepareAudioSnippet() {
+    if (isSnippetPrepared) return;
     setupSnippetStartTime();
+    try {
+      audio.currentTime = snippetStartTime;
+      isSnippetPrepared = true;
+    } catch (e) {
+      console.log("Pre-seek error:", e);
+    }
+  }
+
+  // Khi tải xong metadata bài hát thì gán trước snippetStartTime để buffer sẵn
+  audio.onloadedmetadata = () => {
+    prepareAudioSnippet();
+  };
+
+  audio.oncanplay = () => {
+    prepareAudioSnippet();
   };
 
   // Bắt lỗi nếu file mp3 bị hỏng hoặc link chết
@@ -340,6 +467,14 @@
     pauseAudio();
   };
 
+  audio.onwaiting = () => {
+    if (isPlaying) setPlayBtnState("loading");
+  };
+
+  audio.onplaying = () => {
+    if (isPlaying) setPlayBtnState("playing");
+  };
+
   audio.onended = () => {
     pauseAudio();
     progressBar.style.width = "0%";
@@ -349,7 +484,10 @@
     currentAttempt = 0;
     wrongCount = 0;
     isGameOver = false;
+    isPlaying = false;
+    isAudioLoading = false;
     snippetStartTime = 0;
+    isSnippetPrepared = false;
 
     if (unplayedSongs.length === 0) {
       unplayedSongs = [...songDatabase];
@@ -362,8 +500,13 @@
     hintBox.style.color = "";
     hintBox.style.borderColor = "";
 
+    // Trích xuất ngẫu nhiên cụm 2 đến 3 từ liên tiếp làm hint, cố định suốt 6 lượt của ván
+    const sourceText = currentSong.lyrics || currentSong.hint || "";
+    const randomWordCount = Math.floor(Math.random() * 2) + 2; // 2 hoặc 3 từ ngẫu nhiên
+    currentHintSnippet = getRandomSnippet(sourceText, randomWordCount);
+
     audio.src = currentSong.src;
-    audio.currentTime = 0;
+    audio.load(); // Kích hoạt nạp trước bài hát ngay lập tức
 
     document.getElementById("endScreen").style.display = "none";
     document.getElementById("guessSection").style.display = "block";
@@ -379,8 +522,7 @@
     updateUnlockInfo();
     updateHint();
     progressBar.style.width = "0%";
-    playBtn.textContent = "▶";
-    isPlaying = false;
+    setPlayBtnState("paused");
   }
 
   function updateUnlockInfo() {
@@ -388,14 +530,20 @@
     unlockInfo.textContent = `Nghe tối đa: ${unlockTimes[currentAttempt]} giây (Lượt ${currentAttempt + 1}/${MAX_ATTEMPTS} - Còn ${remainingChances} cơ hội đoán sai)`;
   }
 
-  // Luôn chỉ hiển thị nội dung lời bài hát từ trường hint
+  // Hiển thị cụm từ gợi ý đã được cố định cho ván hiện tại
   function updateHint() {
-    hintBox.textContent = `💡 Gợi ý: "${currentSong.hint || 'Đang cập nhật...'}"`;
+    hintBox.textContent = `💡 Gợi ý: "${currentHintSnippet || 'Đang cập nhật...'}"`;
   }
 
   function togglePlay() {
-    if (isPlaying) {
+    if (isPlaying || isAudioLoading) {
       pauseAudio();
+      if (!isGameOver) {
+        try {
+          audio.currentTime = snippetStartTime;
+        } catch (e) {}
+        progressBar.style.width = "0%";
+      }
     } else {
       if (isGameOver) {
         playFullAudio();
@@ -406,13 +554,27 @@
   }
 
   function playSnippet() {
-    if (snippetStartTime === 0 && audio.duration) {
-      setupSnippetStartTime();
+    if (isAudioLoading) return;
+
+    if (!isSnippetPrepared && audio.duration) {
+      prepareAudioSnippet();
     }
-    audio.currentTime = snippetStartTime;
+
+    // Chỉ gán currentTime nếu đang bị lệch khỏi snippetStartTime
+    if (Math.abs(audio.currentTime - snippetStartTime) > 0.2) {
+      try {
+        audio.currentTime = snippetStartTime;
+      } catch (e) {}
+    }
+
+    setPlayBtnState("loading");
+    isAudioLoading = true;
+
     audio.play().then(() => {
       isPlaying = true;
-      playBtn.textContent = "❚❚";
+      isAudioLoading = false;
+      setPlayBtnState("playing");
+
       const allowedDuration = unlockTimes[currentAttempt];
       const targetEndTime = snippetStartTime + allowedDuration;
 
@@ -422,19 +584,28 @@
         const percent = (elapsed / totalMaxTime) * 100;
         progressBar.style.width = `${Math.min(percent, 100)}%`;
 
-        if (audio.currentTime >= targetEndTime || audio.currentTime < snippetStartTime) {
+        if (audio.currentTime >= targetEndTime || audio.currentTime < snippetStartTime - 0.5) {
           pauseAudio();
-          audio.currentTime = snippetStartTime;
+          // Tua ngược ngay về snippetStartTime để lần bấm tiếp theo phát ngay tức thì
+          try {
+            audio.currentTime = snippetStartTime;
+          } catch (e) {}
           progressBar.style.width = "0%";
         }
-      }, 50);
-    }).catch(e => console.log(e));
+      }, 40);
+    }).catch(e => {
+      isAudioLoading = false;
+      isPlaying = false;
+      setPlayBtnState("paused");
+      console.log("Lỗi playSnippet:", e);
+    });
   }
 
   function playFullAudio() {
+    setPlayBtnState("loading");
     audio.play().then(() => {
       isPlaying = true;
-      playBtn.textContent = "❚❚";
+      setPlayBtnState("playing");
 
       clearInterval(timer);
       timer = setInterval(() => {
@@ -443,13 +614,18 @@
           progressBar.style.width = `${percent}%`;
         }
       }, 100);
-    }).catch(e => console.log(e));
+    }).catch(e => {
+      isPlaying = false;
+      setPlayBtnState("paused");
+      console.log(e);
+    });
   }
 
   function pauseAudio() {
     audio.pause();
     isPlaying = false;
-    playBtn.textContent = "▶";
+    isAudioLoading = false;
+    setPlayBtnState("paused");
     clearInterval(timer);
   }
 
