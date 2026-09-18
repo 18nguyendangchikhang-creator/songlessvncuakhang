@@ -461,10 +461,13 @@
   // Bắt lỗi nếu file mp3 bị hỏng hoặc link chết
   audio.onerror = () => {
     console.error("Lỗi tải audio:", currentSong ? currentSong.src : "");
-    hintBox.textContent = `⚠️ Không thể phát bài hát này (link audio bị lỗi hoặc không tải được). Bạn có thể bấm "Bỏ qua" hoặc "Chơi tiếp bài khác".`;
-    hintBox.style.color = "#fca5a5";
-    hintBox.style.borderColor = "#ef4444";
+    if (!isGameOver && hintBox) {
+      hintBox.textContent = `⚠️ Không thể phát bài hát này (link audio bị lỗi hoặc không tải được). Bạn có thể bấm "Bỏ qua" hoặc "Chơi tiếp bài khác".`;
+      hintBox.style.color = "#fca5a5";
+      hintBox.style.borderColor = "#ef4444";
+    }
     pauseAudio();
+    setPlayBtnState("paused");
   };
 
   audio.onwaiting = () => {
@@ -472,11 +475,12 @@
   };
 
   audio.onplaying = () => {
-    if (isPlaying) setPlayBtnState("playing");
+    setPlayBtnState("playing");
   };
 
   audio.onended = () => {
     pauseAudio();
+    setPlayBtnState("paused");
     progressBar.style.width = "0%";
   };
 
@@ -526,8 +530,10 @@
   }
 
   function updateUnlockInfo() {
-    const remainingChances = MAX_WRONG - wrongCount;
-    unlockInfo.textContent = `Nghe tối đa: ${unlockTimes[currentAttempt]} giây (Lượt ${currentAttempt + 1}/${MAX_ATTEMPTS} - Còn ${remainingChances} cơ hội đoán sai)`;
+    const remainingChances = Math.max(0, MAX_WRONG - wrongCount);
+    const timeIndex = Math.min(Math.max(0, currentAttempt), unlockTimes.length - 1);
+    const turnNumber = Math.min(currentAttempt + 1, MAX_ATTEMPTS);
+    unlockInfo.textContent = `Nghe tối đa: ${unlockTimes[timeIndex]} giây (Lượt ${turnNumber}/${MAX_ATTEMPTS} - Còn ${remainingChances} cơ hội đoán sai)`;
   }
 
   // Hiển thị cụm từ gợi ý đã được cố định cho ván hiện tại
@@ -603,26 +609,40 @@
 
   function playFullAudio() {
     setPlayBtnState("loading");
-    audio.play().then(() => {
-      isPlaying = true;
-      setPlayBtnState("playing");
+    try {
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isPlaying = true;
+          isAudioLoading = false;
+          setPlayBtnState("playing");
 
-      clearInterval(timer);
-      timer = setInterval(() => {
-        if (audio.duration) {
-          const percent = (audio.currentTime / audio.duration) * 100;
-          progressBar.style.width = `${percent}%`;
-        }
-      }, 100);
-    }).catch(e => {
+          clearInterval(timer);
+          timer = setInterval(() => {
+            if (audio.duration && !isNaN(audio.duration) && audio.duration > 0) {
+              const percent = (audio.currentTime / audio.duration) * 100;
+              progressBar.style.width = `${Math.min(percent, 100)}%`;
+            }
+          }, 100);
+        }).catch(err => {
+          console.warn("Không thể tự động phát trọn bài (Autoplay chặn hoặc file audio lỗi):", err);
+          isPlaying = false;
+          isAudioLoading = false;
+          setPlayBtnState("paused");
+        });
+      }
+    } catch (err) {
+      console.warn("Lỗi khi gọi playFullAudio:", err);
       isPlaying = false;
+      isAudioLoading = false;
       setPlayBtnState("paused");
-      console.log(e);
-    });
+    }
   }
 
   function pauseAudio() {
-    audio.pause();
+    try {
+      audio.pause();
+    } catch (e) {}
     isPlaying = false;
     isAudioLoading = false;
     setPlayBtnState("paused");
@@ -699,47 +719,73 @@
 
   // Đoán bài hát
   function submitGuess() {
-    if (isGameOver) return;
+    if (isGameOver || currentAttempt >= MAX_ATTEMPTS) {
+      if (!isGameOver) endGame(false);
+      return;
+    }
+
     const input = document.getElementById("songInput");
     const guessText = input.value.trim();
     if (!guessText) return;
 
+    // Tạm dừng phát audio hiện tại (nếu có)
+    pauseAudio();
+
     const boxes = document.querySelectorAll(".attempt-box");
-    const box = boxes[currentAttempt];
+    const box = boxes && boxes[currentAttempt] ? boxes[currentAttempt] : null;
 
     if (isCorrectAnswer(guessText)) {
       // Đoán đúng
-      box.textContent = `✔ ${guessText}`;
-      box.classList.add("correct");
+      if (box) {
+        box.textContent = `✔ ${guessText}`;
+        box.classList.add("correct");
+      }
       endGame(true);
     } else {
       // Đoán sai -> tăng wrongCount
       wrongCount++;
-      box.textContent = `✖ ${guessText}`;
-      box.classList.add("wrong");
+      if (box) {
+        box.textContent = `✖ ${guessText}`;
+        box.classList.add("wrong");
+      }
 
-      // Nếu đã đoán sai đủ 2 lần -> Thua ngay lập tức
-      if (wrongCount >= MAX_WRONG) {
+      // Nếu đã đoán sai đủ 2 lần hoặc đã là lượt cuối cùng -> Thua ngay lập tức
+      if (wrongCount >= MAX_WRONG || currentAttempt >= MAX_ATTEMPTS - 1) {
         endGame(false);
       } else {
         advanceTurn();
       }
     }
     input.value = "";
-    suggestionsBox.style.display = "none";
+    if (suggestionsBox) suggestionsBox.style.display = "none";
   }
 
   // Bỏ qua (Skip): mở thêm giây nghe nhạc, tuyệt đối KHÔNG tăng wrongCount
   function skipTurn() {
     if (isGameOver) return;
+
+    // Tạm dừng đoạn nhạc đang phát (nếu có)
+    pauseAudio();
+
+    // Điền trạng thái bỏ qua vào ô hiện tại
     const boxes = document.querySelectorAll(".attempt-box");
-    const box = boxes[currentAttempt];
-    box.textContent = "Đã bỏ qua";
-    box.classList.add("skipped");
+    if (boxes && boxes[currentAttempt]) {
+      boxes[currentAttempt].textContent = "Đã bỏ qua";
+      boxes[currentAttempt].classList.add("skipped");
+    }
+
+    // Nếu đã ở lượt cuối cùng (lượt 6, index 5), kết thúc ván ngay lập tức
+    if (currentAttempt >= MAX_ATTEMPTS - 1) {
+      endGame(false);
+      return;
+    }
+
     advanceTurn();
   }
 
   function advanceTurn() {
+    if (isGameOver) return;
+
     currentAttempt++;
     // Nếu hết cả 6 lượt mà vẫn chưa đoán đúng -> Thua
     if (currentAttempt >= MAX_ATTEMPTS) {
@@ -747,35 +793,69 @@
     } else {
       updateUnlockInfo();
       updateHint();
+      // Chuẩn bị lại audio về vị trí snippetStartTime
+      if (!isGameOver && snippetStartTime > 0) {
+        try {
+          audio.currentTime = snippetStartTime;
+        } catch (e) {}
+        progressBar.style.width = "0%";
+      }
     }
   }
 
   function endGame(isWin) {
+    if (isGameOver) return;
     isGameOver = true;
-    pauseAudio();
-    
-    document.getElementById("guessSection").style.display = "none";
-    hintBox.style.display = "none";
-    const endScreen = document.getElementById("endScreen");
-    endScreen.style.display = "block";
 
-    if (isWin) {
-      document.getElementById("resultTitle").textContent = praiseMessages[currentAttempt] || "Chúc mừng! Bạn đã đoán đúng 🎉";
-    } else {
-      document.getElementById("resultTitle").textContent = wrongCount >= MAX_WRONG 
-        ? " Chưa tày đâu 🐔" 
-        : " Quá gàaaa! hahaha 🐔";
+    // Dừng phát snippet và hủy trạng thái loading của nút Play
+    pauseAudio();
+    setPlayBtnState("paused");
+
+    // Luôn ẩn vùng đoán bài và gợi ý
+    const guessSection = document.getElementById("guessSection");
+    if (guessSection) guessSection.style.display = "none";
+    if (hintBox) hintBox.style.display = "none";
+
+    // Luôn hiển thị màn hình kết thúc
+    const endScreen = document.getElementById("endScreen");
+    if (endScreen) endScreen.style.display = "block";
+
+    // Cập nhật tiêu đề kết quả
+    const resultTitleEl = document.getElementById("resultTitle");
+    if (resultTitleEl) {
+      if (isWin) {
+        const praiseIndex = Math.min(Math.max(0, currentAttempt), praiseMessages.length - 1);
+        resultTitleEl.textContent = praiseMessages[praiseIndex] || "Chúc mừng! Bạn đã đoán đúng 🎉";
+      } else {
+        resultTitleEl.textContent = wrongCount >= MAX_WRONG 
+          ? " Chưa tày đâu 🐔" 
+          : " Quá gàaaa! hahaha 🐔";
+      }
     }
 
-    document.getElementById("resultSong").textContent = `Đáp án: ${currentSong.title} - ${currentSong.artist}`;
-    unlockInfo.textContent = "Đang phát trọn vẹn toàn bộ bài hát";
+    // Hiển thị thông tin bài hát
+    const resultSongEl = document.getElementById("resultSong");
+    if (resultSongEl && currentSong) {
+      resultSongEl.textContent = `Đáp án: ${currentSong.title} - ${currentSong.artist}`;
+    }
 
-    audio.currentTime = 0;
+    if (unlockInfo) {
+      unlockInfo.textContent = "Đang phát trọn vẹn toàn bộ bài hát";
+    }
+
+    // Tua về đầu và phát trọn bài hát (có bắt lỗi autoplay)
+    try {
+      audio.currentTime = 0;
+    } catch (err) {
+      console.warn("Không thể tua về 0:", err);
+    }
+
     playFullAudio();
   }
 
   function playNextSong() {
     pauseAudio();
+    setPlayBtnState("paused");
     initGame();
   }
 
